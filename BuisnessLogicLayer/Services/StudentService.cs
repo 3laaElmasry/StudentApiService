@@ -31,6 +31,17 @@ namespace BuisnessLogicLayer.Services
             return dtoFromDb?.ToStudentDto();
         }
 
+        public bool DeleteStudent(int Id)
+        {
+            var studentFromDb = _context.Students.FirstOrDefault(s => s.Id == Id);
+
+            if(studentFromDb is null) 
+                return false;
+            _context.Remove(studentFromDb);
+            Save();
+            return true;
+        }
+
         public IEnumerable<StudentDto> GetAll()
         {
             var dtoStudents = _context.Students.Select(s => s.ToStudentDto());

@@ -142,5 +142,28 @@ namespace StudentApi.Controllers
             return Ok(studentAfterUpadted);
         }
 
+
+        [HttpDelete]
+        [Route("[action]")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+
+        public ActionResult DeleteStudent(int Id)
+        {
+            if (Id <= 0)
+            {
+                return BadRequest($"The Id {Id} is not accepted.");
+            }
+
+            if (_studentService.DeleteStudent(Id))
+            {
+                return Ok($"Student With Id {Id} was been deleted.");
+            }
+            else
+            {
+                return NotFound($"The Student With Id {Id} is not Found");
+            }
+        }
     }
 }

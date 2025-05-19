@@ -16,5 +16,7 @@ namespace BuisnessLogicLayer.IServiceContracts
 
         StudentDto? UpdateStudent(int Id, StudentDto student);
 
+        bool DeleteStudent(int Id);
+
     }
 }
