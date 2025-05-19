@@ -15,6 +15,22 @@ namespace BuisnessLogicLayer.Services
             _context = context;
         }
 
+        public StudentDto? AddNewStudent(StudentDto student)
+        {
+            var studentFromDb = _context.Students
+                .FirstOrDefault(s => s.Name == student.Name && s.Grade == student.Grade && s.Age == student.Age);
+
+            if (studentFromDb is not null)
+                return null;
+
+            _context.Students.Add(student.ToStudent());
+            Save();
+
+            var dtoFromDb = _context.Students
+                .FirstOrDefault(s => s.Name == student.Name && s.Grade == student.Grade && s.Age == student.Age);
+            return dtoFromDb?.ToStudentDto();
+        }
+
         public IEnumerable<StudentDto> GetAll()
         {
             var dtoStudents = _context.Students.Select(s => s.ToStudentDto());
@@ -38,6 +54,11 @@ namespace BuisnessLogicLayer.Services
         {
             var student = _context.Students.FirstOrDefault(s => s.Id == id);
             return student is null ? null : student.ToStudentDto();
+        }
+
+        private void Save()
+        {
+            _context.SaveChanges();
         }
     }
 }

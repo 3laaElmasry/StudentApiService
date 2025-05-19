@@ -70,14 +70,14 @@ namespace StudentApi.Controllers
 
 
         [HttpGet]
-        [Route("[action]")]
+        [HttpGet("{id}", Name = "GetStudentById")]
 
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        
 
-
-        public ActionResult<double> GetStudentById(int id)
+        public ActionResult<StudentDto> GetStudentById(int id)
         {
             if(id <= 0)
             {
@@ -90,5 +90,28 @@ namespace StudentApi.Controllers
             }
             return Ok(student);
         }
+
+        [HttpPost]
+        [Route("[action]")]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status409Conflict)]
+        public ActionResult<StudentDto> AddNewStudent(StudentDto newStudent)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest("Invalid student data provided.");
+            }
+
+            var studentDto =  _studentService.AddNewStudent(newStudent);
+            if (studentDto == null)
+            {
+                return Conflict("A student with the same details already exists.");
+            }
+
+            // Assuming you have a GetStudentById action with route name "GetStudentById"
+            return CreatedAtRoute("GetStudentById", new { id = studentDto.Id }, studentDto);
+        }
+
     }
 }
