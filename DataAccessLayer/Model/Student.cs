@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using DataAccessLayer.DTO;
+using System.ComponentModel.DataAnnotations;
 
 namespace StudentApi.Models
 {
@@ -16,5 +17,20 @@ namespace StudentApi.Models
         public int Grade { get; set; }
 
 
+    }
+
+
+    public static class StudentExtenstions
+    {
+        public static StudentDto ToStudentDto(this Student student)
+        {
+            return new StudentDto
+            {
+                Name = student.Name,
+                Age = student.Age,
+                Grade = student.Grade,
+                Id = student.Id
+            };
+        }
     }
 }

@@ -1,3 +1,5 @@
+using BuisnessLogicLayer.IServiceContracts;
+using BuisnessLogicLayer.Services;
 using DataAccessLayer.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.ObjectPool;
@@ -15,6 +17,8 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 {
     options.UseSqlServer(builder.Configuration.GetConnectionString("MyConnection"));
 });
+
+builder.Services.AddScoped<IStudentService,StudentService>();
 
 var app = builder.Build();
 
