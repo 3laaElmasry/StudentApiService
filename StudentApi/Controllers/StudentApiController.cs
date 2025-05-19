@@ -34,5 +34,21 @@ namespace StudentApi.Controllers
             }
             return Ok(studenst);
         }
+
+        [HttpGet]
+        [Route("[action]")]
+
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public ActionResult<IEnumerable<StudentDto>> GetPassedStudents()
+        {
+            var studenst = _studentService.GetPassedStudents();
+
+            if (studenst.Count() == 0)
+            {
+                return NotFound("No Students Passed Found");
+            }
+            return Ok(studenst);
+        }
     }
 }

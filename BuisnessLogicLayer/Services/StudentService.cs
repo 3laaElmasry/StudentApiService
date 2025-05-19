@@ -20,5 +20,13 @@ namespace BuisnessLogicLayer.Services
             var dtoStudents = _context.Students.Select(s => s.ToStudentDto());
             return dtoStudents;
         }
+
+        public IEnumerable<StudentDto> GetPassedStudents()
+        {
+            var passedStudents = _context.Students.Where(s => s.Grade >= 50)
+                .Select(s => s.ToStudentDto());
+
+            return passedStudents;
+        }
     }
 }
