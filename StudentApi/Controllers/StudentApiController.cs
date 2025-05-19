@@ -67,5 +67,28 @@ namespace StudentApi.Controllers
             }
             return Ok(res);
         }
+
+
+        [HttpGet]
+        [Route("[action]")]
+
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+
+
+        public ActionResult<double> GetStudentById(int id)
+        {
+            if(id <= 0)
+            {
+                return BadRequest($"The Id {id} was not Accepted.");
+            }
+            var student = _studentService.GetStudentById(id);
+            if (student is null)
+            {
+                return NotFound($"Student With Id {id} Is Not Found.");
+            }
+            return Ok(student);
+        }
     }
 }

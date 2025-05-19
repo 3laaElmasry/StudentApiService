@@ -33,5 +33,11 @@ namespace BuisnessLogicLayer.Services
 
             return passedStudents;
         }
+
+        public StudentDto? GetStudentById(int id)
+        {
+            var student = _context.Students.FirstOrDefault(s => s.Id == id);
+            return student is null ? null : student.ToStudentDto();
+        }
     }
 }

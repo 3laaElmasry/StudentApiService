@@ -10,5 +10,7 @@ namespace BuisnessLogicLayer.IServiceContracts
 
         Double GetAverage();
 
+        StudentDto? GetStudentById(int id);
+
     }
 }
