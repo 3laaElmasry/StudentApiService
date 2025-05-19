@@ -21,6 +21,11 @@ namespace BuisnessLogicLayer.Services
             return dtoStudents;
         }
 
+        public double GetAverage()
+        {
+            return _context.Students.Average(s => s.Grade);
+        }
+
         public IEnumerable<StudentDto> GetPassedStudents()
         {
             var passedStudents = _context.Students.Where(s => s.Grade >= 50)

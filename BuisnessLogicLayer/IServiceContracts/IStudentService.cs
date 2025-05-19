@@ -8,5 +8,7 @@ namespace BuisnessLogicLayer.IServiceContracts
         IEnumerable<StudentDto> GetAll();
         IEnumerable<StudentDto> GetPassedStudents();
 
+        Double GetAverage();
+
     }
 }

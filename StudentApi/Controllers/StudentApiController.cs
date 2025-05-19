@@ -50,5 +50,22 @@ namespace StudentApi.Controllers
             }
             return Ok(studenst);
         }
+
+        [HttpGet]
+        [Route("[action]")]
+
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+
+        public ActionResult<double> GetAverage()
+        {
+            double res = _studentService.GetAverage();
+            if(res <= 0)
+            {
+                return NotFound("No Students Found");
+
+            }
+            return Ok(res);
+        }
     }
 }
