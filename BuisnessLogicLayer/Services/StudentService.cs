@@ -56,6 +56,22 @@ namespace BuisnessLogicLayer.Services
             return student is null ? null : student.ToStudentDto();
         }
 
+        public StudentDto? UpdateStudent(int Id, StudentDto student)
+        {
+            var studentFromDb = _context.Students.FirstOrDefault(s => s.Id == Id);
+            if(studentFromDb is null)
+            {
+                return null;
+            }
+
+            studentFromDb.Name = student.Name;
+            studentFromDb.Age = student.Age;
+            studentFromDb.Grade = student.Grade;
+            _context.Update(studentFromDb);
+            Save();
+            return studentFromDb.ToStudentDto();
+        }
+
         private void Save()
         {
             _context.SaveChanges();

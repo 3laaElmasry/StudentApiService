@@ -113,5 +113,34 @@ namespace StudentApi.Controllers
             return CreatedAtRoute("GetStudentById", new { id = studentDto.Id }, studentDto);
         }
 
+
+        [HttpPut]
+        [Route("[action]")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public ActionResult<StudentDto> Update(int Id, StudentDto newStudentData)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest("Invalid student data provided.");
+            }
+
+            if(Id <= 0)
+            {
+                return BadRequest($"The Id {Id} is not accepted.");
+            }
+
+            var studentAfterUpadted = _studentService.UpdateStudent(Id, newStudentData);
+
+            if(studentAfterUpadted is null)
+            {
+                return NotFound($"The Student With Id {Id} is not Found");
+            }
+
+            
+            return Ok(studentAfterUpadted);
+        }
+
     }
 }

@@ -14,5 +14,7 @@ namespace BuisnessLogicLayer.IServiceContracts
 
         StudentDto? AddNewStudent(StudentDto student);
 
+        StudentDto? UpdateStudent(int Id, StudentDto student);
+
     }
 }
