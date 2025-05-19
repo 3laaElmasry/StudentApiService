@@ -1,4 +1,5 @@
-﻿using System;
+﻿using StudentApi.Models;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -21,4 +22,19 @@ namespace DataAccessLayer.DTO
         public int Grade { get; set; }
 
     }
+
+    public static class StudentDtoExtenstions
+    {
+        public static Student ToStudent(this StudentDto student)
+        {
+            return new Student
+            {
+                Name = student.Name,
+                Age = student.Age,
+                Grade = student.Grade,
+                Id = student.Id
+            };
+        }
+    }
+
 }
