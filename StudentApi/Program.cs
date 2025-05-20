@@ -2,8 +2,6 @@ using BuisnessLogicLayer.IServiceContracts;
 using BuisnessLogicLayer.Services;
 using DataAccessLayer.Data;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.ObjectPool;
-
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
