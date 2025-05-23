@@ -1,12 +1,21 @@
 using BuisnessLogicLayer.IServiceContracts;
 using BuisnessLogicLayer.Services;
 using DataAccessLayer.Data;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
-builder.Services.AddControllers();
+builder.Services.AddControllers(options =>
+{
+    //Apply the response type (all responses type will be a 'pplication/json' type)
+    options.Filters.Add(new ProducesAttribute("application/json"));
+
+    //Applyl the request type (the server will recevie the only 'application/json' type requests)
+    options.Filters.Add(new ConsumesAttribute("application/json"));
+
+});
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(options =>
