@@ -1,14 +1,12 @@
 ﻿using BuisnessLogicLayer.IServiceContracts;
 using DataAccessLayer.DTO;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using System.Security.AccessControl;
+
 
 namespace StudentApi.Controllers
 {
-    [Route("api/[controller]")]
-    [ApiController]
-    public class StudentApiController : ControllerBase
+    
+    public class StudentApiController : CutstomControllerBase
     {
 
         private readonly IStudentService _studentService;

@@ -6,9 +6,8 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace StudentApi.Controllers
 {
-    [Route("api/[controller]")]
-    [ApiController]
-    public class CitiesController : ControllerBase
+
+    public class CitiesController : CutstomControllerBase
     {
         private readonly ApplicationDbContext _context;
 
