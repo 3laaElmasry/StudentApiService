@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>StudentApi</name>
+    </assembly>
+    <members>
+        <member name="M:StudentApi.Controllers.CitiesController.GetCities">
+            <summary>
+            To get list of cities (including city id , city name) from cities table
+            </summary>
+            <returns></returns>
+        </member>
+    </members>
+</doc>

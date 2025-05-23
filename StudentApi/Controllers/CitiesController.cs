@@ -16,6 +16,11 @@ namespace StudentApi.Controllers
             _context = context;
         }
 
+        /// <summary>
+        /// To get list of cities (including city id , city name) from cities table
+        /// </summary>
+        /// <returns></returns>
+
         // GET: api/Cities
         [HttpGet]
         public async Task<ActionResult<IEnumerable<City>>> GetCities()
