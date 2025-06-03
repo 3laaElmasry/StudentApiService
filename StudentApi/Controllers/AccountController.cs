@@ -78,5 +78,43 @@ namespace StudentApi.Controllers
                 return Ok(false);
             }
         }
+
+
+        [HttpPost("login")]
+        public async Task<ActionResult<ApplicationUser>> PostLogin(LoginDTO loginDTO)
+        {
+            if(ModelState.IsValid is false)
+            {
+                string errorMessage = String.Join(" , ", 
+                    ModelState.Values.SelectMany(e => e.Errors).Select(e => e.ErrorMessage));
+                return Problem(errorMessage);
+            }
+
+
+
+            var result = await _signInManager
+                .PasswordSignInAsync(loginDTO.Email, loginDTO.Password, false, false);
+
+            if (result.Succeeded)
+            {
+                ApplicationUser? applicationUser = await _userManager.FindByEmailAsync (loginDTO.Email);
+                if (applicationUser is not null)
+                {
+                    return Ok(new {PersonName = applicationUser.PersonName,
+                        Email = applicationUser.Email});
+                }
+            }
+
+            return Problem("Invaild Email or Password");
+
+        }
+
+
+        [HttpGet]
+        public async Task<ActionResult> GetLogOut()
+        {
+            await _signInManager.SignOutAsync();
+            return NoContent();
+        }
     }
 }
