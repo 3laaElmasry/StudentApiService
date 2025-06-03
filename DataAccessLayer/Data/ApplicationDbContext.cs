@@ -1,10 +1,12 @@
 ﻿using DataAccessLayer.Model;
 using Microsoft.EntityFrameworkCore;
 using StudentApi.Models;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using DataAccessLayer.Identity;
 
 namespace DataAccessLayer.Data
 {
-    public class ApplicationDbContext : DbContext
+    public class ApplicationDbContext : IdentityDbContext<ApplicationUser, ApplicationRole,Guid>
     {
         public ApplicationDbContext(DbContextOptions options) : base(options) 
         {
