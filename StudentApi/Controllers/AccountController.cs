@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Identity;
 using DataAccessLayer.Identity;
 using DataAccessLayer.DTO;
+using BuisnessLogicLayer.IServiceContracts;
 
 namespace StudentApi.Controllers
 {
@@ -16,14 +17,17 @@ namespace StudentApi.Controllers
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly RoleManager<ApplicationRole> _roleManager;
+        private readonly IJwtService _jwtService;
 
         public AccountController(UserManager<ApplicationUser> userManager,
             SignInManager<ApplicationUser> signInManager,
-            RoleManager<ApplicationRole> roleManager)
+            RoleManager<ApplicationRole> roleManager,
+            IJwtService jwtService)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _roleManager = roleManager;
+            _jwtService = jwtService;
         }
 
         [HttpPost]
@@ -53,7 +57,11 @@ namespace StudentApi.Controllers
             if (result.Succeeded)
             {
                 await _signInManager.SignInAsync(applicationUser,false);
-                return Ok(applicationUser);
+
+                AuthonticationResponse authoneticationResponse =
+                      _jwtService.CreateJwtToken(applicationUser);
+
+                return Ok(authoneticationResponse);
             }
             else
             {
@@ -100,8 +108,10 @@ namespace StudentApi.Controllers
                 ApplicationUser? applicationUser = await _userManager.FindByEmailAsync (loginDTO.Email);
                 if (applicationUser is not null)
                 {
-                    return Ok(new {PersonName = applicationUser.PersonName,
-                        Email = applicationUser.Email});
+                    AuthonticationResponse authoneticationResponse = 
+                        _jwtService.CreateJwtToken(applicationUser);
+
+                    return Ok(authoneticationResponse);
                 }
             }
 

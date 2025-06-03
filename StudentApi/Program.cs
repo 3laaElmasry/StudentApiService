@@ -45,6 +45,8 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 
 builder.Services.AddScoped<IStudentService,StudentService>();
 
+builder.Services.AddTransient<IJwtService,JwtService>();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
