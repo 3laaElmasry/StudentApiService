@@ -1,0 +1,82 @@
+﻿using StudentApi.Controllers;
+using Microsoft.AspNetCore.Authorization;
+
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Identity;
+using DataAccessLayer.Identity;
+using DataAccessLayer.DTO;
+
+namespace StudentApi.Controllers
+{
+    [AllowAnonymous]
+
+    
+    public class AccountController : CutstomControllerBase
+    {
+        private readonly UserManager<ApplicationUser> _userManager;
+        private readonly SignInManager<ApplicationUser> _signInManager;
+        private readonly RoleManager<ApplicationRole> _roleManager;
+
+        public AccountController(UserManager<ApplicationUser> userManager,
+            SignInManager<ApplicationUser> signInManager,
+            RoleManager<ApplicationRole> roleManager)
+        {
+            _userManager = userManager;
+            _signInManager = signInManager;
+            _roleManager = roleManager;
+        }
+
+        [HttpPost]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+
+        public async Task<ActionResult<ApplicationUser>> PostRegister(RegisterDTO registerDTO)
+        {
+            if(!ModelState.IsValid)
+            {
+                string errorMessage = String.Join(" , ",ModelState.Values.SelectMany(e => e.Errors)
+                    .Select(m => m.ErrorMessage));
+
+                return Problem(errorMessage,statusCode: StatusCodes.Status400BadRequest);
+            }
+
+            ApplicationUser applicationUser = new ApplicationUser
+            {
+                PersonName = registerDTO.PersonName,
+                UserName = registerDTO.UserName,
+                Email = registerDTO.Email,
+                PhoneNumber = registerDTO.PhoneNumber,
+            };
+
+            var result = await _userManager.CreateAsync(applicationUser,registerDTO.Password);
+
+            if (result.Succeeded)
+            {
+                await _signInManager.SignInAsync(applicationUser,false);
+                return Ok(applicationUser);
+            }
+            else
+            {
+                string errorMessage = string
+                    .Join(" , ", result.Errors.Select(e => e.Description));
+                return Problem(errorMessage, statusCode: StatusCodes.Status400BadRequest);
+
+            }
+        }
+
+        [HttpGet]
+        public async Task<ActionResult> IsEmailAlreadyExist(string email)
+        {
+            ApplicationUser? user = await _userManager.FindByEmailAsync(email);
+
+            if(user is null)
+            {
+                return Ok(true);
+            }
+            else
+            {
+                return Ok(false);
+            }
+        }
+    }
+}
