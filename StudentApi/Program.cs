@@ -4,11 +4,14 @@ using DataAccessLayer.Data;
 using DataAccessLayer.Identity;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using System.Net;
 using System.Text;
 var builder = WebApplication.CreateBuilder(args);
 
@@ -21,6 +24,11 @@ builder.Services.AddControllers(options =>
 
     //Applyl the request type (the server will recevie the only 'application/json' type requests)
     options.Filters.Add(new ConsumesAttribute("application/json"));
+
+    var policy = new AuthorizationPolicyBuilder()
+    .RequireAuthenticatedUser().Build();
+
+    options.Filters.Add(new AuthorizeFilter(policy));
 
 });
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
