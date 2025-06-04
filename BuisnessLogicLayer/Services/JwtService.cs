@@ -8,6 +8,7 @@ using System.Security.Claims;
 using System.IdentityModel.Tokens.Jwt;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using System.Security.Cryptography;
 
 namespace BuisnessLogicLayer.Services
 {
@@ -69,7 +70,21 @@ namespace BuisnessLogicLayer.Services
                 PersonName = applicationUser.PersonName!,
                 Email = applicationUser.Email!,
                 Expiration = expiration,
+                RefreshToken = GenerateRefreshToken(),
+                RefreshTokenExpirationDateTime = DateTime.UtcNow
+                .AddMinutes(Convert.ToInt32(_configuration["RefreshToken:Expiration_Minutes"]))
+                
             };
+        }
+
+
+        //Create Refresh token (base 64 string of random numbers)
+        public string GenerateRefreshToken()
+        {
+            byte[] bytes = new byte[64];
+            RandomNumberGenerator randomNumber =  RandomNumberGenerator.Create();
+            randomNumber.GetBytes(bytes);
+            return Convert.ToBase64String(bytes);
         }
     }
 }

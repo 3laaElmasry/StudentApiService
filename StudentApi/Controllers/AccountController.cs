@@ -61,6 +61,16 @@ namespace StudentApi.Controllers
                 AuthonticationResponse authoneticationResponse =
                       _jwtService.CreateJwtToken(applicationUser);
 
+                //Add RefreshToken to user
+                applicationUser.RefreshToken =  authoneticationResponse.RefreshToken;
+
+                //Add RefreshToken Expiration to User
+                applicationUser.RefreshTokenExpirationDateTime = 
+                    authoneticationResponse.RefreshTokenExpirationDateTime;
+
+                await _userManager.UpdateAsync(applicationUser);
+
+
                 return Ok(authoneticationResponse);
             }
             else
@@ -74,6 +84,7 @@ namespace StudentApi.Controllers
 
         [HttpGet]
         public async Task<ActionResult> IsEmailAlreadyExist(string email)
+
         {
             ApplicationUser? user = await _userManager.FindByEmailAsync(email);
 
@@ -110,6 +121,12 @@ namespace StudentApi.Controllers
                 {
                     AuthonticationResponse authoneticationResponse = 
                         _jwtService.CreateJwtToken(applicationUser);
+
+                    //Add RefreshToken Expiration to User
+                    applicationUser.RefreshTokenExpirationDateTime =
+                        authoneticationResponse.RefreshTokenExpirationDateTime;
+
+                    await _userManager.UpdateAsync(applicationUser);
 
                     return Ok(authoneticationResponse);
                 }

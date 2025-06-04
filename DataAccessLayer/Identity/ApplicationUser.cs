@@ -6,5 +6,8 @@ namespace DataAccessLayer.Identity
     {
         [Required]
         public string? PersonName { get; set; }
+        public string? RefreshToken { get; set; }
+        public DateTime RefreshTokenExpirationDateTime { get; set; }
+
     }
 }
